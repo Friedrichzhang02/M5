@@ -38,10 +38,14 @@ public class Main {
      * @return whether the string satisfies the password requirements
      */
     public static boolean checkForPassword(String str, int minLength) {
-        final boolean propertyOne = Pattern.matches("REPLACE WITH CORRECT REGEX", str);
-        // as needed, modify this code.
-        return propertyOne;
+        if (str == null) {
+            return false;
+        }
+        // 至少 minLength 个字符，且至少一个小写、一个大写、一个数字
+        String regex = "^(?=.{"+ minLength +",})(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$";
+        return Pattern.matches(regex, str);
     }
+
 
     // Method 2 for checking if a string conforms to a regex: using Matcher.find
     // TODO: Modify this method to return a list of all email addresses contained in the
@@ -55,14 +59,19 @@ public class Main {
      * @return a list containing the email addresses in the string.
      */
     public static List<String> extractEmails(String str) {
-        final Pattern pattern = Pattern.compile("REPLACE WITH CORRECT REGEX");
-        final Matcher matcher = pattern.matcher(str);
         final List<String> result = new ArrayList<>();
+        if (str == null) {
+            return result;
+        }
+
+        final Pattern pattern = Pattern.compile("\\b[^\\s@]+@(mail\\.utoronto\\.ca|utoronto\\.ca)\\b");
+        final Matcher matcher = pattern.matcher(str);
         while (matcher.find()) {
             result.add(matcher.group());
         }
         return result;
     }
+
 
     // Method 3 for checking if a string conforms to a regex: using String.matches
 
@@ -76,6 +85,9 @@ public class Main {
      * @return whether str contains the same capital letter twice.
      */
     public static boolean checkForDoubles(String str) {
-        return str.matches("replace with correct regex");
+        if (str == null) {
+            return false;
+        }
+        return str.matches(".*([A-Z]).*\\1.*");
     }
 }
